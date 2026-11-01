@@ -1,0 +1,38 @@
+# Large binaries & APKs
+*.apk
+*.zip
+8603_original_heavy.pdf
+
+# Vercel & Node
+.vercel/
+web/.vercel/
+node_modules/
+
+# Python & backend
+.env
+*.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+backend/__pycache__/
+
+# Flutter & Dart
+.dart_tool/
+.packages
+build/
+bed_assistant/build/
+bed_assistant/.dart_tool/
+bed_assistant/android/.gradle/
+bed_assistant/android/local.properties
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

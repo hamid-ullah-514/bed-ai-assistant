@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B.Ed AI Book Assistant — علامہ اقبال اوپن یونیورسٹی تعلیمی معاون</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body dir="rtl">
+
+  <!-- Main Header & Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-wrapper" onclick="switchTab('ask')">
+        <div class="brand-logo">📚</div>
+        <div class="brand-text">
+          <h1>B.Ed AI Book Assistant</h1>
+          <p>علامہ اقبال اوپن یونیورسٹی • 6 کتب پر مبنی امتحانی و تدریسی معاون</p>
+        </div>
+      </div>
+
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="ask">
+          <span>💬</span>
+          <span>سوال و جواب</span>
+        </button>
+        <button class="nav-tab" data-tab="index">
+          <span>📑</span>
+          <span>کتب کا اشاریہ (Index)</span>
+        </button>
+        <button class="nav-tab" data-tab="search">
+          <span>🔍</span>
+          <span>کتب میں تلاش</span>
+        </button>
+        <button class="nav-tab" data-tab="books">
+          <span>📚</span>
+          <span>تمام 6 کتب</span>
+        </button>
+        <button class="nav-tab" data-tab="history">
+          <span>🕒</span>
+          <span>ہسٹری</span>
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <a href="https://github.com/hamid-ullah-514/bed-ai-assistant" target="_blank" class="print-btn" style="text-decoration: none; color: var(--primary-mint); font-weight: 700; border-color: var(--primary-mint);" title="گٹ ہب ریپوزٹری و موبائل ایپ">
+          <span>⭐ گٹ ہب ریپوزٹری</span>
+        </a>
+        <div class="status-pill" id="status-pill">
+          <span class="status-dot"></span>
+          <span>6 کتب منسلک (1,534 صفحات)</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="main-wrapper">
+
+    <!-- TAB 1: ASK QUESTION & GET ANSWER -->
+    <section class="tab-pane active" id="ask-pane">
+      
+      <!-- Educational Hero Banner -->
+      <div class="hero-card">
+        <div class="hero-badge">🎓 مستند تعلیمی پلیٹ فارم • AIOU B.Ed 1.5 Year</div>
+        <div class="hero-title">علامہ اقبال اوپن یونیورسٹی کی 6 کتب سے امتحانی سوالات کے جوابات</div>
+        <div class="hero-subtitle">
+          کوئی بھی سوال لکھیں، ہمارا اے آئی سسٹم آپ کے سوال کا جواب چھ کتب کے 1,534 صفحات میں سے تلاش کرے گا اور ہر ہیڈنگ کے ساتھ اس کا اصل کتابی صفحہ نمبر بتائے گا۔
+        </div>
+      </div>
+
+      <!-- Question Input Box -->
+      <div class="ask-box-card">
+        <div class="question-input-wrapper">
+          <textarea 
+            id="question-input" 
+            class="question-textarea urdu-text" 
+            placeholder="اپنا امتحانی سوال یہاں اردو یا انگلش میں لکھیں (مثلاً: تدریس کے موثر طریقے اور سبق کی منصوبہ بندی کی کیا اہمیت ہے؟)..."
+          ></textarea>
+        </div>
+
+        <!-- Options Bar: Language & Detail Style -->
+        <div class="options-bar">
+          <div class="option-group">
+            <span>🌐 جواب کی زبان:</span>
+            <div class="pill-selector">
+              <button class="pill-option active" data-lang="urdu">اردو (Urdu)</button>
+              <button class="pill-option" data-lang="english">English</button>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <span>📝 اندازِ تحریر:</span>
+            <div class="pill-selector">
+              <button class="pill-option active" data-style="concise" title="ہیڈنگز مع صفحات اور مختصر جامع وضاحت">مختصر و جامع مع صفحات</button>
+              <button class="pill-option" data-style="detailed" title="ہیڈنگز مع تفصیلی امتحانی نوٹس">تفصیلی امتحانی</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Book Selection Chips -->
+        <div class="books-chips-section">
+          <div class="books-chips-title">
+            <span>📖 کتب کا انتخاب (کسی مخصوص کتاب سے جواب کے لیے کلک کریں):</span>
+          </div>
+          <div class="chips-container">
+            <button class="book-chip selected" data-book="all">✨ تمام 6 کتب</button>
+            <button class="book-chip" data-book="1">📘 8601 تدریس کے طریقے</button>
+            <button class="book-chip" data-book="2">📗 8602 تعلیمی جائزہ</button>
+            <button class="book-chip" data-book="3">📙 8603 نصاب سازی</button>
+            <button class="book-chip" data-book="4">📕 8604 تعلیمی تحقیق</button>
+            <button class="book-chip" data-book="5">📓 8605 تعلیمی قیادت</button>
+            <button class="book-chip" data-book="6">📚 8606 شہریت و معاشرہ</button>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="ask-actions-bar">
+          <button id="ask-btn" class="primary-btn">
+            <span>🚀 کتابوں سے جواب حاصل کریں (Get Answer)</span>
+          </button>
+          <button id="clear-btn" class="secondary-btn">
+            <span>🗑️ صاف کریں</span>
+          </button>
+        </div>
+
+        <!-- Quick Sample Prompts -->
+        <div class="quick-prompts-section">
+          <div class="quick-prompts-title">💡 فوری امتحانی سوالات (کلک کر کے فوراً جواب دیکھیں):</div>
+          <div class="prompts-list">
+            <button class="prompt-pill" data-prompt="استاد کی خصوصیات اور تدریسی کردار کیا ہے؟">
+              استاد کی خصوصیات اور تدریسی کردار کیا ہے؟ (8601)
+            </button>
+            <button class="prompt-pill" data-prompt="تشکیلی اور اختتامی جائزے (Formative & Summative) میں کیا فرق ہے؟">
+              تشکیلی اور اختتامی جائزے میں کیا فرق ہے؟ (8602)
+            </button>
+            <button class="prompt-pill" data-prompt="نصاب سازی کے بنیادی عناصر اور مراحل بیان کریں۔">
+              نصاب سازی کے بنیادی عناصر اور مراحل بیان کریں (8603)
+            </button>
+            <button class="prompt-pill" data-prompt="تعلیمی تحقیق میں ڈیٹا کلیکشن اور سیمپلنگ کے طریقے بتائیں۔">
+              تعلیمی تحقیق کے طریقے اور سیمپلنگ (8604)
+            </button>
+            <button class="prompt-pill" data-prompt="تعلیمی انتظام اور اسکول میں نظم و ضبط کی حکمت عملیاں۔">
+              کلاس روم مینجمنٹ اور نظم و ضبط (8605)
+            </button>
+            <button class="prompt-pill" data-prompt="تعلیم اور معاشرتی ترقی میں اسکول اور کمیونٹی کا باہمی تعلق۔">
+              اسکول اور کمیونٹی کا باہمی اشتراک (8606)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading Indicator -->
+      <div id="loading-box" class="loading-box">
+        <div class="loading-spinner"></div>
+        <div class="loading-title">چھ بی ایڈ کتب میں تحقیق کی جا رہی ہے...</div>
+        <div class="loading-subtitle">
+          متعلقہ ابواب کی جانچ، عنوانات کی درجہ بندی اور اصل کتابی صفحات کی تصدیق جاری ہے...
+        </div>
+      </div>
+
+      <!-- ANSWER CONTAINER (Core Requirement Result) -->
+      <div id="answer-container" class="answer-container">
+        
+        <!-- Answer Header Ribbon -->
+        <div class="answer-header-bar">
+          <div class="answer-header-meta">
+            <span class="verified-stamp">✓ 6 کتب سے تصدیق شدہ</span>
+            <span id="answer-headings-count" class="answer-headings-count">20 عنوانات (مکمل ماخذ مع صفحات)</span>
+          </div>
+
+          <div class="answer-header-actions">
+            <button id="copy-btn-top" class="copy-btn">
+              <span>📋 پورا جواب کاپی کریں</span>
+            </button>
+            <button id="print-btn" class="print-btn" title="پرنٹ یا پی ڈی ایف کے طور پر محفوظ کریں">
+              <span>🖨️ پرنٹ / PDF</span>
+            </button>
+            <button id="new-query-btn" class="print-btn" title="نیا سوال پوچھیں">
+              <span>🔄 نیا سوال</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="answer-body">
+          <!-- Question Display -->
+          <div class="answer-question-display">
+            <span>سوال: </span>
+            <span id="answer-question-display">...</span>
+          </div>
+
+          <!-- Introduction Section -->
+          <div class="section-intro-card">
+            <div class="section-label">
+              <span>📌 تعارف (Introduction):</span>
+            </div>
+            <div id="intro-text" class="section-intro-text urdu-text"></div>
+          </div>
+
+          <!-- INDEX TABLE OF HEADINGS & PAGES (Directly fulfilling user request: "index bnay is sy") -->
+          <div id="answer-index-card" class="answer-index-card">
+            <div class="index-card-header">
+              <div class="index-title">
+                <span>📑 فہرستِ عنوانات و کتب و صفحات (Headings & Page Index)</span>
+              </div>
+              <span id="index-card-badge" class="index-badge">20 عنوانات مع صفحات</span>
+            </div>
+            <div class="table-responsive">
+              <table class="index-table">
+                <thead>
+                  <tr>
+                    <th style="width: 48px; text-align: center;">#</th>
+                    <th>عنوان / ہیڈنگ (Heading Title)</th>
+                    <th>کتاب کا نام و کوڈ (Book)</th>
+                    <th style="text-align: center;">PDF صفحہ</th>
+                    <th style="text-align: center;">پرنٹ صفحہ</th>
+                    <th style="width: 140px; text-align: center;">اصل صفحہ دیکھیں</th>
+                  </tr>
+                </thead>
+                <tbody id="answer-index-tbody">
+                  <!-- Dynamically populated index rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Headings & Exact Book Page Numbers Section -->
+          <div class="headings-section-title">
+            <span>📚 عنوانات کی مختصر و جامع وضاحت (Grounded Summaries):</span>
+            <small style="font-weight: 500; font-size: 12px; color: var(--text-muted);">
+              (نیچے معمولی مختصر تشریح اور کتاب کے صفحے کا ماخذ درج ہے)
+            </small>
+          </div>
+
+          <div id="headings-list" class="headings-list">
+            <!-- Dynamically populated heading cards -->
+          </div>
+
+          <!-- Quran & Hadith Evidence Card (if applicable) -->
+          <div id="islamic-evidence-card" class="islamic-evidence-card" style="display: none;">
+            <div class="islamic-evidence-header">
+              <span>🕌 قرآنی و حدیث شواہد (Islamic Evidence):</span>
+            </div>
+            <div id="islamic-evidence-content">
+              <!-- Dynamically populated Quran/Hadith items -->
+            </div>
+          </div>
+
+          <!-- Conclusion Section -->
+          <div id="conclusion-card" class="section-conclusion-card">
+            <div class="section-label">
+              <span>🎯 حاصل کلام (Conclusion):</span>
+            </div>
+            <div id="conclusion-text" class="section-conclusion-text urdu-text"></div>
+          </div>
+
+          <!-- Bottom Full Copy Button -->
+          <div class="bottom-copy-bar">
+            <div>
+              <strong style="color: var(--primary-navy);">تمام نکات امتحانی تیاری کے لیے مکمل ہیں</strong>
+              <div style="font-size: 12px; color: var(--text-muted);">آپ ایک کلک سے پورا جواب ٹیکسٹ کی شکل میں کاپی کر سکتے ہیں۔</div>
+            </div>
+            <button id="copy-btn-bottom" class="primary-btn" style="padding: 10px 20px;">
+              <span>📋 پورا جواب ٹیکسٹ میں کاپی کریں (Copy Full Answer)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TAB: MASTER BOOKS INDEX (جامع اشاریہ کتب) -->
+    <section class="tab-pane" id="index-pane">
+      <div class="search-card">
+        <h2 style="font-size: 20px; font-weight: 800; color: var(--primary-navy); margin-bottom: 8px;">
+          📑 بی ایڈ کتب کا جامع اشاریہ (Master Headings & Topics Index)
+        </h2>
+        <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 18px;">
+          تمام 6 درسی کتب کے تمام ابواب، اہم موضوعات اور ہیڈنگز مع اصل صفحہ نمبرات۔ کسی بھی عنوان کے سامنے بٹن دبا کر اس کا اصل کتابی صفحہ فوراً کھول کر دیکھیں۔
+        </p>
+
+        <!-- Search Input inside Index -->
+        <div style="margin-bottom: 16px;">
+          <input 
+            type="text" 
+            id="master-index-search" 
+            class="index-search-input urdu-text" 
+            placeholder="اشاریہ میں تلاش کریں (مثلاً: lesson planning, test construction, evaluation, curriculum)..."
+          >
+        </div>
+
+        <!-- Filter By Book Chips -->
+        <div class="filter-group" style="margin-bottom: 16px;">
+          <label style="font-size: 13px; font-weight: 700; color: var(--primary-navy); margin-bottom: 6px; display: block;">
+            کتاب منتخب کریں:
+          </label>
+          <div class="book-chips" id="master-index-chips">
+            <button class="book-chip selected" data-index-book="all">تمام 6 کتب (All Books)</button>
+            <button class="book-chip" data-index-book="1">8601: تدریسی طریقے</button>
+            <button class="book-chip" data-index-book="2">8602: جائزہ و پیمائش</button>
+            <button class="book-chip" data-index-book="3">8603: نصاب سازی</button>
+            <button class="book-chip" data-index-book="4">8604: تعلیمی تحقیق</button>
+            <button class="book-chip" data-index-book="5">8605: تعلیمی انتظام</button>
+            <button class="book-chip" data-index-book="6">8606: شہریت و کمیونٹی</button>
+          </div>
+        </div>
+
+        <!-- Count Indicator -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <span id="master-index-count" style="font-size: 13px; font-weight: 700; color: var(--primary-mint);">
+            اشاریہ لوڈ ہو رہا ہے...
+          </span>
+          <button id="refresh-index-btn" class="print-btn" style="padding: 4px 10px; font-size: 12px;">
+            <span>🔄 ریفریش</span>
+          </button>
+        </div>
+
+        <!-- Index Table -->
+        <div class="table-responsive" style="background: white; border-radius: var(--radius-md); border: 1px solid var(--border-color); max-height: 600px; overflow-y: auto;">
+          <table class="index-table">
+            <thead style="position: sticky; top: 0; z-index: 2;">
+              <tr>
+                <th style="width: 48px; text-align: center;">#</th>
+                <th>عنوان / ہیڈنگ (Heading)</th>
+                <th>کتاب کا نام و کوڈ</th>
+                <th>باب / یونٹ (Unit)</th>
+                <th style="text-align: center;">PDF صفحہ</th>
+                <th style="text-align: center;">پرنٹ صفحہ</th>
+                <th style="width: 130px; text-align: center;">صفحہ دیکھیں</th>
+              </tr>
+            </thead>
+            <tbody id="master-index-tbody">
+              <!-- Dynamically populated index items -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: SEARCH IN ALL 6 BOOKS -->
+    <section class="tab-pane" id="search-pane">
+      <div class="search-card">
+        <h2 style="font-size: 20px; font-weight: 800; color: var(--primary-navy); margin-bottom: 8px;">
+          🔍 تمام 1,534 صفحات میں لفظی تلاش (Full-Text Search)
+        </h2>
+        <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 18px;">
+          علامہ اقبال اوپن یونیورسٹی کی 6 کتب میں کسی بھی تدریسی یا امتحانی اصطلاح کو فوراً تلاش کریں اور مطلوبہ صفحہ کھولیں۔
+        </p>
+
+        <div class="search-input-group">
+          <input 
+            type="text" 
+            id="search-input" 
+            class="search-input" 
+            placeholder="کوئی بھی لفظ یا عنوان تلاش کریں (مثلاً: formative assessment, bloom taxonomy, lesson plan, تعلیمی جائزہ)..."
+          >
+          <select id="search-book-filter" class="search-input" style="flex: 0 0 220px;">
+            <option value="all">تمام 6 کتب</option>
+            <option value="1">Book 1: 8601 تدریس کے طریقے</option>
+            <option value="2">Book 2: 8602 تعلیمی جائزہ</option>
+            <option value="3">Book 3: 8603 نصاب سازی</option>
+            <option value="4">Book 4: 8604 تعلیمی تحقیق</option>
+            <option value="5">Book 5: 8605 تعلیمی قیادت</option>
+            <option value="6">Book 6: 8606 شہریت و معاشرہ</option>
+          </select>
+          <button id="search-btn" class="primary-btn" style="padding: 10px 22px;">
+            <span>تلاش کریں</span>
+          </button>
+        </div>
+
+        <div id="search-results-list" class="search-results-list">
+          <div style="text-align: center; padding: 28px; color: var(--text-muted); background: var(--bg-main); border-radius: 12px; border: 1px dashed var(--border-color);">
+            تلاش کرنے کے لیے اوپر باکس میں کوئی لفظ لکھ کر "تلاش کریں" دبائیں۔
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: BOOKS LIBRARY -->
+    <section class="tab-pane" id="books-pane">
+      <div style="margin-bottom: 20px;">
+        <h2 style="font-size: 22px; font-weight: 800; color: var(--primary-navy);">
+          📚 علامہ اقبال اوپن یونیورسٹی کی 6 درسی کتب (Official Textbooks)
+        </h2>
+        <p style="font-size: 13.5px; color: var(--text-muted);">
+          تمام کتب مکمل انڈیکس شدہ ہیں اور ان کے تمام 1,534 صفحات پی ڈی ایف ریڈر میں براہِ راست پڑھے جا سکتے ہیں۔
+        </p>
+      </div>
+
+      <div id="books-grid" class="books-grid">
+        <!-- Dynamically populated book cards -->
+      </div>
+    </section>
+
+    <!-- TAB 4: HISTORY -->
+    <section class="tab-pane" id="history-pane">
+      <div style="margin-bottom: 20px;">
+        <h2 style="font-size: 22px; font-weight: 800; color: var(--primary-navy);">
+          🕒 سابقہ پوچھے گئے سوالات (Question History)
+        </h2>
+        <p style="font-size: 13.5px; color: var(--text-muted);">
+          کسی بھی سابقہ سوال پر کلک کر کے اس کا مکمل جواب اور ماخذ صفحات دوبارہ دیکھیں۔
+        </p>
+      </div>
+
+      <div id="history-list" class="history-list">
+        <!-- Dynamically populated history cards -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Interactive In-Page PDF Page Viewer Modal -->
+  <div id="page-modal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div id="modal-title" class="modal-header-title">
+          <span>📖 صفحہ کا جائزہ</span>
+        </div>
+        <button id="modal-close-btn" class="modal-close-btn" title="بند کریں">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <img id="modal-page-img" class="modal-page-img" alt="کتاب کا صفحہ لوڈ ہو رہا ہے..." src="">
+      </div>
+
+      <div class="modal-footer">
+        <div class="modal-page-nav">
+          <button id="modal-prev-btn" class="modal-nav-btn">⬅️ پچھلا صفحہ</button>
+          <span id="modal-page-indicator" class="modal-page-indicator">1 / 249</span>
+          <button id="modal-next-btn" class="modal-nav-btn">اگلا صفحہ ➡️</button>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <button id="modal-zoom-in" class="modal-nav-btn" title="بڑا کریں">🔍 +</button>
+          <button id="modal-zoom-out" class="modal-nav-btn" title="چھوٹا کریں">🔍 -</button>
+          <button id="modal-full-pdf-btn" class="primary-btn" style="padding: 6px 14px; font-size: 12px;">
+            <span>📖 پوری کتاب پی ڈی ایف میں کھولیں</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">
+    <span>✓</span>
+    <span id="toast-msg">پیغام</span>
+  </div>
+
+  <!-- App Footer -->
+  <footer class="app-footer">
+    <div>
+      <strong>B.Ed AI Book Assistant</strong> • Allama Iqbal Open University (AIOU) Study Assistant
+    </div>
+    <div style="font-size: 11.5px; margin-top: 4px;">
+      100% مستند علمی جوابات • چھ درسی کتب (8601 سے 8606) سے بلا تحریف معلومات
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

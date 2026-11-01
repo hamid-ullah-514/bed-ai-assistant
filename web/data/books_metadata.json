@@ -1,0 +1,56 @@
+[
+  {
+    "book_number": 1,
+    "course_code": "8601",
+    "title": "General Methods of Teaching",
+    "author_dept": "Department of Early Childhood Education and Elementary Teacher Education",
+    "university": "Allama Iqbal Open University, Islamabad",
+    "total_pages": 249,
+    "indexed_pages": 249
+  },
+  {
+    "book_number": 2,
+    "course_code": "8602",
+    "title": "Educational Assessment and Evaluation",
+    "author_dept": "Department of Early Childhood Education and Elementary Teacher Education",
+    "university": "Allama Iqbal Open University, Islamabad",
+    "total_pages": 240,
+    "indexed_pages": 240
+  },
+  {
+    "book_number": 3,
+    "course_code": "8603",
+    "title": "Curriculum Development",
+    "author_dept": "Department of Early Childhood Education & Elementary Teacher Education",
+    "university": "Allama Iqbal Open University, Islamabad",
+    "total_pages": 258,
+    "indexed_pages": 258
+  },
+  {
+    "book_number": 4,
+    "course_code": "8604",
+    "title": "Research Methods in Education",
+    "author_dept": "Department of Early Childhood Education & Elementary Teacher Education",
+    "university": "Allama Iqbal Open University, Islamabad",
+    "total_pages": 341,
+    "indexed_pages": 341
+  },
+  {
+    "book_number": 5,
+    "course_code": "8605",
+    "title": "Educational Leadership and Management",
+    "author_dept": "Department of Early Childhood Education & Elementary Teacher Education",
+    "university": "Allama Iqbal Open University, Islamabad",
+    "total_pages": 231,
+    "indexed_pages": 231
+  },
+  {
+    "book_number": 6,
+    "course_code": "8606",
+    "title": "Citizenship Education and Community Engagement",
+    "author_dept": "Department of Early Childhood Education & Elementary Teacher Education",
+    "university": "Allama Iqbal Open University, Islamabad",
+    "total_pages": 215,
+    "indexed_pages": 215
+  }
+]
