@@ -333,8 +333,8 @@ async function handleAsk(presetText) {
         throw new Error(`Server returned code ${response.status}`);
       }
     } catch (_) {
-      // Fallback: Client-Side Grounded Answer Builder (for Vercel Cloud & Offline Mode)
-      answer = await buildClientSideAnswer(question, bookList, state.language);
+      // Fallback: Direct Groq Cloud AI Generation
+      answer = await callChatGPTGroq(question, state.language);
     }
 
     state.currentAnswer = answer;
@@ -349,71 +349,32 @@ async function handleAsk(presetText) {
   }
 }
 
-// Client-Side Grounded Answer Builder for Vercel Static Deployment
-async function buildClientSideAnswer(question, bookList, language) {
-  if (!state.masterIndex.staticData) {
-    const res = await fetch('/data/books_index.json');
-    if (res.ok) state.masterIndex.staticData = await res.json();
-  }
-  let pool = state.masterIndex.staticData || [];
-  if (bookList && bookList.length > 0) {
-    pool = pool.filter(it => bookList.includes(it.book_number));
-  }
+// Resilient Cloud AI Generation Fallback via Vercel /api/ask
+async function callChatGPTGroq(question, language) {
+  const isUrdu = language === 'urdu' || /[\u0600-\u06FF]/.test(question);
+  
+  const endpoints = [
+    '/api/ask',
+    'https://bed-ai-assistant.vercel.app/api/ask'
+  ];
 
-  const words = question.toLowerCase().split(/\s+/).filter(w => w.length > 2);
-  const scored = pool.map(item => {
-    let score = 0;
-    const txt = `${item.heading} ${item.unit_title} ${item.snippet}`.toLowerCase();
-    words.forEach(w => {
-      if (txt.includes(w)) score += 2;
-    });
-    return { item, score };
-  });
-
-  scored.sort((a, b) => b.score - a.score);
-  let selected = scored.filter(s => s.score > 0).map(s => s.item);
-
-  if (selected.length < 20) {
-    const selectedIds = new Set(selected.map(s => `${s.book_number}_${s.pdf_page}`));
-    for (const p of pool) {
-      const key = `${p.book_number}_${p.pdf_page}`;
-      if (!selectedIds.has(key)) {
-        selected.push(p);
-        selectedIds.add(key);
-        if (selected.length >= 20) break;
+  let lastError = null;
+  for (const ep of endpoints) {
+    try {
+      const res = await fetch(ep, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: question.trim(), language: isUrdu ? 'urdu' : 'english' })
+      });
+      if (res.ok) {
+        return await res.json();
       }
+    } catch (e) {
+      lastError = e;
     }
   }
-  selected = selected.slice(0, 20);
 
-  const isUrdu = language === 'urdu';
-  const headings = selected.map((s, idx) => ({
-    heading_number: idx + 1,
-    heading_title: s.heading || `عنوان ${idx + 1}`,
-    explanation: s.snippet 
-      ? `درسی کتاب کے مطابق: "${s.snippet.trim()}" یہ اہم نکتہ امتحانی نقطہ نظر سے خاص اہمیت کا حامل ہے۔`
-      : `علامہ اقبال اوپن یونیورسٹی کی درسی کتاب کے یونٹ "${s.unit_title}" میں اس موضوع پر تفصیلی بحث موجود ہے۔`,
-    source_reference: {
-      book_number: `Book ${s.book_number}`,
-      book_title: s.book_title,
-      course_code: s.course_code,
-      chapter: s.unit_title,
-      pdf_page: s.pdf_page,
-      printed_page: s.printed_page || s.pdf_page
-    }
-  }));
-
-  return {
-    found: true,
-    introduction: isUrdu
-      ? `علامہ اقبال اوپن یونیورسٹی کی 6 درسی کتب (کورس کوڈز: 8601 تا 8606) کی روشنی میں، سوال "${question}" کے متعلق مستند 20 امتحانی نکات اور ان کے اصل کتابی صفحات کا اشاریہ درج ذیل ہے:`
-      : `Based strictly on the six official AIOU B.Ed textbooks (Courses: 8601 to 8606), here are the 20 verified academic headings and cited pages for "${question}":`,
-    headings: headings,
-    conclusion: isUrdu
-      ? `حاصل کلام یہ ہے کہ بی ایڈ نصاب میں مذکورہ بالا تمام نکات طلبہ و اساتذہ کے تدریسی فہم کے لیے بنیادی اہمیت رکھتے ہیں۔ کتب کے اصل صفحات اوپر دی گئی فہرست سے دیکھے جا سکتے ہیں۔`
-      : `In conclusion, all headings presented above are strictly grounded in the official AIOU B.Ed curriculum. Original textbook pages are cited above.`,
-    islamic_evidence: null
-  };
+  throw lastError || new Error('All API endpoints failed');
 }
 
 // Render Answer Function (Strictly implementing user request)

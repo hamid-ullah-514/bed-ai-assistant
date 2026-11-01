@@ -50,15 +50,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               runSpacing: 6,
               children: [
                 ActionChip(
-                  label: const Text('Wi-Fi PC (192.168.1.35)', style: TextStyle(fontSize: 11)),
+                  label: const Text('☁️ Cloud Server (Vercel)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
                   onPressed: () {
-                    _serverUrlController.text = 'http://192.168.1.35:8000';
+                    _serverUrlController.text = 'https://bed-ai-assistant.vercel.app';
                   },
                 ),
                 ActionChip(
-                  label: const Text('Emulator (10.0.2.2)', style: TextStyle(fontSize: 11)),
+                  label: const Text('Wi-Fi PC (192.168.1.35)', style: TextStyle(fontSize: 11)),
                   onPressed: () {
-                    _serverUrlController.text = 'http://10.0.2.2:8000';
+                    _serverUrlController.text = 'http://192.168.1.35:8000';
                   },
                 ),
                 ActionChip(

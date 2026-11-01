@@ -6,23 +6,22 @@ class StorageService {
   static const String keyApiKey = 'bed_gemini_api_key';
   static const String keyDarkMode = 'bed_dark_mode';
 
-  // The developer's current PC Wi-Fi IP for direct physical Android phone testing
+  // Default to live cloud backend so physical phones work everywhere
+  static const String cloudBackendUrl = 'https://bed-ai-assistant.vercel.app';
   static const String defaultPcIp = '192.168.1.35';
 
   static String getDefaultBaseUrl() {
-    if (kIsWeb) {
-      return 'http://localhost:8000';
-    }
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      // Connects directly to the PC running the FastAPI backend on local Wi-Fi
-      return 'http://$defaultPcIp:8000';
-    }
-    return 'http://localhost:8000';
+    return cloudBackendUrl;
   }
 
   static Future<String> getBaseUrl() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(keyBaseUrl) ?? getDefaultBaseUrl();
+    final saved = prefs.getString(keyBaseUrl);
+    // If not set or set to emulator-only 10.0.2.2 which fails on physical phones, auto-fix
+    if (saved == null || saved.trim().isEmpty || saved.contains('10.0.2.2')) {
+      return cloudBackendUrl;
+    }
+    return saved.trim();
   }
 
   static Future<void> setBaseUrl(String url) async {

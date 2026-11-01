@@ -7,15 +7,17 @@ import 'storage_service.dart';
 
 class ApiService {
   static const List<String> candidateUrls = [
+    'https://bed-ai-assistant.vercel.app',
     'http://192.168.1.35:8000',
-    'http://192.168.1.38:8000',
-    'http://10.0.2.2:8000',
     'http://127.0.0.1:8000',
-    'http://localhost:8000',
   ];
 
   static Future<String> _getUrl(String endpoint) async {
-    final base = await StorageService.getBaseUrl();
+    var base = await StorageService.getBaseUrl();
+    if (base.contains('10.0.2.2') || base.isEmpty) {
+      base = 'https://bed-ai-assistant.vercel.app';
+      await StorageService.setBaseUrl(base);
+    }
     final cleanBase = base.endsWith('/') ? base.substring(0, base.length - 1) : base;
     final cleanEndpoint = endpoint.startsWith('/') ? endpoint : '/$endpoint';
     return '$cleanBase$cleanEndpoint';
@@ -109,21 +111,37 @@ class ApiService {
         throw Exception('Server error (${resp.statusCode}): ${resp.body}');
       }
     } catch (e) {
-      final working = await autoDetectWorkingUrl();
-      if (working != null) {
-        final retryUrl = '$working/api/ask';
-        final resp = await http.post(
-          Uri.parse(retryUrl),
+      // Fallback 1: Direct Vercel Cloud Server
+      try {
+        final cloudResp = await http.post(
+          Uri.parse('https://bed-ai-assistant.vercel.app/api/ask'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(payload),
-        ).timeout(const Duration(seconds: 45));
+        ).timeout(const Duration(seconds: 40));
 
-        if (resp.statusCode == 200) {
-          final Map<String, dynamic> data = json.decode(utf8.decode(resp.bodyBytes));
+        if (cloudResp.statusCode == 200) {
+          final Map<String, dynamic> data = json.decode(utf8.decode(cloudResp.bodyBytes));
           return AnswerResponse.fromJson(data);
         }
+      } catch (_) {}
+
+      final working = await autoDetectWorkingUrl();
+      if (working != null) {
+        try {
+          final retryUrl = '$working/api/ask';
+          final resp = await http.post(
+            Uri.parse(retryUrl),
+            headers: {'Content-Type': 'application/json'},
+            body: json.encode(payload),
+          ).timeout(const Duration(seconds: 35));
+
+          if (resp.statusCode == 200) {
+            final Map<String, dynamic> data = json.decode(utf8.decode(resp.bodyBytes));
+            return AnswerResponse.fromJson(data);
+          }
+        } catch (_) {}
       }
-      throw Exception('کمپیوٹر سرور سے رابطہ نہیں ہو سکا۔ برائے مہربانی چیک کریں کہ run_backend.bat چل رہا ہے اور موبائل اسی وائی فائی پر ہے۔ ($e)');
+      throw Exception('سرور سے رابطہ نہیں ہو سکا۔ انٹرنیٹ کنکشن یا Wi-Fi چیک کریں۔ ($e)');
     }
   }
 

@@ -158,112 +158,121 @@
         </div>
       </div>
 
-      <!-- ANSWER CONTAINER (Core Requirement Result) -->
-      <div id="answer-container" class="answer-container">
+      <!-- CHATGPT STYLE CONVERSATION FRAME -->
+      <div id="answer-container" class="chat-conversation-frame" style="display: none;">
         
-        <!-- Answer Header Ribbon -->
-        <div class="answer-header-bar">
-          <div class="answer-header-meta">
-            <span class="verified-stamp">✓ 6 کتب سے تصدیق شدہ</span>
-            <span id="answer-headings-count" class="answer-headings-count">20 عنوانات (مکمل ماخذ مع صفحات)</span>
-          </div>
-
-          <div class="answer-header-actions">
-            <button id="copy-btn-top" class="copy-btn">
-              <span>📋 پورا جواب کاپی کریں</span>
-            </button>
-            <button id="print-btn" class="print-btn" title="پرنٹ یا پی ڈی ایف کے طور پر محفوظ کریں">
-              <span>🖨️ پرنٹ / PDF</span>
-            </button>
-            <button id="new-query-btn" class="print-btn" title="نیا سوال پوچھیں">
-              <span>🔄 نیا سوال</span>
-            </button>
+        <!-- User Question Bubble (سوال کا خوبصورت کارڈ) -->
+        <div class="chat-turn user-turn">
+          <div class="chat-avatar user-avatar">👤</div>
+          <div class="chat-bubble user-bubble">
+            <div class="chat-bubble-header">
+              <span class="chat-role-label">آپ کا سوال (Your Question)</span>
+              <span id="user-question-meta" class="chat-meta-badge">علامہ اقبال اوپن یونیورسٹی بی ایڈ 1.5 سالہ</span>
+            </div>
+            <div id="answer-question-display" class="user-question-text urdu-text">...</div>
           </div>
         </div>
 
-        <div class="answer-body">
-          <!-- Question Display -->
-          <div class="answer-question-display">
-            <span>سوال: </span>
-            <span id="answer-question-display">...</span>
-          </div>
-
-          <!-- Introduction Section -->
-          <div class="section-intro-card">
-            <div class="section-label">
-              <span>📌 تعارف (Introduction):</span>
-            </div>
-            <div id="intro-text" class="section-intro-text urdu-text"></div>
-          </div>
-
-          <!-- INDEX TABLE OF HEADINGS & PAGES (Directly fulfilling user request: "index bnay is sy") -->
-          <div id="answer-index-card" class="answer-index-card">
-            <div class="index-card-header">
-              <div class="index-title">
-                <span>📑 فہرستِ عنوانات و کتب و صفحات (Headings & Page Index)</span>
+        <!-- Assistant Answer Bubble (جواب کا خوبصورت چیٹ جی پی ٹی کارڈ) -->
+        <div class="chat-turn ai-turn">
+          <div class="chat-avatar ai-avatar">🎓</div>
+          <div class="chat-bubble ai-bubble">
+            
+            <!-- AI Header Bar -->
+            <div class="ai-header-bar">
+              <div class="ai-identity">
+                <span class="ai-name">B.Ed AI پروفیسر (AIOU Academic Assistant)</span>
+                <span id="answer-headings-count" class="ai-status-tag">✓ 6 کتب سے تصدیق شدہ 20 نکات</span>
               </div>
-              <span id="index-card-badge" class="index-badge">20 عنوانات مع صفحات</span>
+              <div class="ai-actions">
+                <button id="copy-btn-top" class="chat-action-btn" title="پورا جواب کاپی کریں">
+                  <span>📋 پورا جواب کاپی کریں</span>
+                </button>
+                <button id="print-btn" class="chat-action-btn" title="پرنٹ یا پی ڈی ایف محفوظ کریں">
+                  <span>🖨️ پرنٹ / PDF</span>
+                </button>
+                <button id="new-query-btn" class="chat-action-btn" title="نیا سوال پوچھیں">
+                  <span>🔄 نیا سوال</span>
+                </button>
+              </div>
             </div>
-            <div class="table-responsive">
-              <table class="index-table">
-                <thead>
-                  <tr>
-                    <th style="width: 48px; text-align: center;">#</th>
-                    <th>عنوان / ہیڈنگ (Heading Title)</th>
-                    <th>کتاب کا نام و کوڈ (Book)</th>
-                    <th style="text-align: center;">PDF صفحہ</th>
-                    <th style="text-align: center;">پرنٹ صفحہ</th>
-                    <th style="width: 140px; text-align: center;">اصل صفحہ دیکھیں</th>
-                  </tr>
-                </thead>
-                <tbody id="answer-index-tbody">
-                  <!-- Dynamically populated index rows -->
-                </tbody>
-              </table>
-            </div>
-          </div>
 
-          <!-- Headings & Exact Book Page Numbers Section -->
-          <div class="headings-section-title">
-            <span>📚 عنوانات کی مختصر و جامع وضاحت (Grounded Summaries):</span>
-            <small style="font-weight: 500; font-size: 12px; color: var(--text-muted);">
-              (نیچے معمولی مختصر تشریح اور کتاب کے صفحے کا ماخذ درج ہے)
-            </small>
-          </div>
-
-          <div id="headings-list" class="headings-list">
-            <!-- Dynamically populated heading cards -->
-          </div>
-
-          <!-- Quran & Hadith Evidence Card (if applicable) -->
-          <div id="islamic-evidence-card" class="islamic-evidence-card" style="display: none;">
-            <div class="islamic-evidence-header">
-              <span>🕌 قرآنی و حدیث شواہد (Islamic Evidence):</span>
+            <!-- INDEX TABLE OF HEADINGS & PAGES (Quick Jump Table) -->
+            <div id="answer-index-card" class="answer-index-card">
+              <div class="index-card-header">
+                <div class="index-title">
+                  <span>📑 فہرستِ عنوانات و کتب و صفحات (Headings & Page Index)</span>
+                </div>
+                <span id="index-card-badge" class="index-badge">20 عنوانات مع صفحات</span>
+              </div>
+              <div class="table-responsive">
+                <table class="index-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 48px; text-align: center;">#</th>
+                      <th>عنوان / ہیڈنگ (Heading Title)</th>
+                      <th>کتاب کا نام و کوڈ</th>
+                      <th style="text-align: center;">PDF صفحہ</th>
+                      <th style="text-align: center;">پرنٹ صفحہ</th>
+                      <th style="width: 130px; text-align: center;">اصل صفحہ</th>
+                    </tr>
+                  </thead>
+                  <tbody id="answer-index-tbody"></tbody>
+                </table>
+              </div>
             </div>
-            <div id="islamic-evidence-content">
-              <!-- Dynamically populated Quran/Hadith items -->
-            </div>
-          </div>
 
-          <!-- Conclusion Section -->
-          <div id="conclusion-card" class="section-conclusion-card">
-            <div class="section-label">
-              <span>🎯 حاصل کلام (Conclusion):</span>
+            <!-- Introduction Section -->
+            <div class="chat-intro-card">
+              <div class="section-label">
+                <span>📌 جامع تعارف (Introduction):</span>
+              </div>
+              <div id="intro-text" class="chat-intro-text urdu-text"></div>
             </div>
-            <div id="conclusion-text" class="section-conclusion-text urdu-text"></div>
-          </div>
 
-          <!-- Bottom Full Copy Button -->
-          <div class="bottom-copy-bar">
-            <div>
-              <strong style="color: var(--primary-navy);">تمام نکات امتحانی تیاری کے لیے مکمل ہیں</strong>
-              <div style="font-size: 12px; color: var(--text-muted);">آپ ایک کلک سے پورا جواب ٹیکسٹ کی شکل میں کاپی کر سکتے ہیں۔</div>
+            <!-- Headings Section Title -->
+            <div class="headings-section-title">
+              <span>📚 تفصیلی امتحانی نکات و توضیحات (Exam Headings & Explanations):</span>
+              <small style="font-weight: 500; font-size: 13px; color: var(--text-muted);">
+                (ہر نکتہ کے تحت جامع و روانی سے بھرپور امتحانی وضاحت اور متعلقہ کتاب کا صفحہ درج ہے)
+              </small>
             </div>
-            <button id="copy-btn-bottom" class="primary-btn" style="padding: 10px 20px;">
-              <span>📋 پورا جواب ٹیکسٹ میں کاپی کریں (Copy Full Answer)</span>
-            </button>
+
+            <!-- List of Headings with ChatGPT-style Cards -->
+            <div id="headings-list" class="chat-headings-list"></div>
+
+            <!-- Islamic Evidence Card (if applicable) -->
+            <div id="islamic-evidence-card" class="islamic-evidence-card" style="display: none;">
+              <div class="islamic-evidence-header">
+                <span>🕌 قرآنی و حدیث شواہد (Islamic Evidence):</span>
+              </div>
+              <div id="islamic-evidence-content"></div>
+            </div>
+
+            <!-- Conclusion Section -->
+            <div id="conclusion-card" class="chat-conclusion-card">
+              <div class="section-label">
+                <span>🎯 حاصل کلام (Conclusion):</span>
+              </div>
+              <div id="conclusion-text" class="chat-conclusion-text urdu-text"></div>
+            </div>
+
+            <!-- Bottom Full Copy Button -->
+            <div class="bottom-copy-bar">
+              <div>
+                <strong style="color: var(--primary-navy); font-size: 15px;">جواب مکمل اور امتحانی معیار کے عین مطابق ہے</strong>
+                <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 2px;">ایک کلک سے پورا جواب ٹیکسٹ کی شکل میں کاپی کر لیں۔</div>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button id="copy-btn-bottom" class="primary-btn" style="padding: 10px 20px;">
+                  <span>📋 پورا جواب ٹیکسٹ میں کاپی کریں</span>
+                </button>
+              </div>
+            </div>
+
           </div>
         </div>
+
       </div>
 
     </section>
