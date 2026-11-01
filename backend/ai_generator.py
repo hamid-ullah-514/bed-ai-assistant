@@ -129,6 +129,14 @@ def build_offline_structured_answer(
     }
 
 URDU_TO_ENG_DICT = {
+    "اسکول": "school community education",
+    "کمیونٹی": "community engagement school",
+    "اشتراک": "collaboration engagement partnership",
+    "خصوصیات": "characteristics qualities traits",
+    "کردار": "role responsibility functions",
+    "بنیادی": "foundations basic fundamental",
+    "عناصر": "elements components stages",
+    "مراحل": "phases stages steps",
     "جائزہ": "assessment evaluation",
     "امتحان": "examination test",
     "امتحانات": "examinations tests",
@@ -177,7 +185,7 @@ URDU_TO_ENG_DICT = {
 }
 
 async def translate_urdu_query_to_english(question: str, groq_key: Optional[str] = None) -> str:
-    # 1. Try Groq quick keyword extraction
+    # 1. Try Groq quick keyword extraction with adequate tokens for reasoning models
     if groq_key:
         try:
             async with httpx.AsyncClient(timeout=8.0) as client:
@@ -191,7 +199,7 @@ async def translate_urdu_query_to_english(question: str, groq_key: Optional[str]
                             {"role": "user", "content": question}
                         ],
                         "temperature": 0.1,
-                        "max_tokens": 50
+                        "max_tokens": 350
                     }
                 )
                 if res.status_code == 200:
@@ -199,8 +207,8 @@ async def translate_urdu_query_to_english(question: str, groq_key: Optional[str]
                     kw_clean = re.sub(r'[^a-zA-Z0-9\s]', ' ', kw).strip()
                     if len(kw_clean) > 3:
                         return kw_clean
-        except Exception as e:
-            print(f"[Query Translation Error] {e}")
+        except Exception:
+            pass
 
     # 2. Fallback to dictionary mapping
     english_terms = []
@@ -340,6 +348,15 @@ async def generate_ai_answer(
     else:
         is_urdu = is_urdu_text(question)
 
+    # Auto-detect course code in question if book_numbers not specified
+    if not book_numbers:
+        code_match = re.search(r'860[1-6]', question)
+        if code_match:
+            code_map = {"8601": 1, "8602": 2, "8603": 3, "8604": 4, "8605": 5, "8606": 6}
+            detected_b = code_map.get(code_match.group(0))
+            if detected_b:
+                book_numbers = [detected_b]
+
     groq_key = GROQ_API_KEY
 
     # If query is in Urdu or target is Urdu, translate query to English for FTS book search
@@ -351,6 +368,13 @@ async def generate_ai_answer(
     passages = search_pages(query=search_q, book_numbers=book_numbers, limit=20)
     if not passages and search_q != question:
         passages = search_pages(query=question, book_numbers=book_numbers, limit=20)
+
+    # Robust fallback: if search returned no passages, retrieve key passages from the selected book
+    if not passages:
+        if book_numbers:
+            passages = search_pages(query="education teaching learning curriculum assessment", book_numbers=book_numbers, limit=20)
+        else:
+            passages = search_pages(query="education teaching learning curriculum assessment", limit=20)
 
     islamic_data = get_islamic_evidence_for_query(question)
 
