@@ -1,5 +1,48 @@
-/* B.Ed AI Book Assistant — Web Application Stylesheet */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap');
+/* ==========================================================================
+   B.Ed AI Book Assistant — Web Application Stylesheet
+   Typography: Jameel Noori Nastaleeq (منقول از مدرسہ سعد بن معاذ / عبداللہ بن زبیر)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Local & CDN Font-Face: Jameel Noori Nastaleeq
+   -------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Jameel Noori Nastaleeq';
+  src: url('../assets/fonts/JameelNooriNastaleeq.woff') format('woff'),
+       url('/assets/fonts/JameelNooriNastaleeq.woff') format('woff'),
+       url('https://cdn.jsdelivr.net/npm/jameel-noori/fonts/jameel-noori-nastaleeq4.woff2') format('woff2'),
+       url('../assets/fonts/JameelNooriNastaleeq.ttf') format('truetype'),
+       url('/assets/fonts/JameelNooriNastaleeq.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Jameel Noori Nastaleeq';
+  src: url('../assets/fonts/JameelNooriNastaleeq.woff') format('woff'),
+       url('/assets/fonts/JameelNooriNastaleeq.woff') format('woff'),
+       url('https://cdn.jsdelivr.net/npm/jameel-noori/fonts/jameel-noori-nastaleeq4.woff2') format('woff2'),
+       url('../assets/fonts/JameelNooriNastaleeq.ttf') format('truetype'),
+       url('/assets/fonts/JameelNooriNastaleeq.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Jameel Noori Nastaleeq';
+  src: url('../assets/fonts/JameelNooriNastaleeq.woff') format('woff'),
+       url('/assets/fonts/JameelNooriNastaleeq.woff') format('woff'),
+       url('https://cdn.jsdelivr.net/npm/jameel-noori/fonts/jameel-noori-nastaleeq4.woff2') format('woff2'),
+       url('../assets/fonts/JameelNooriNastaleeq.ttf') format('truetype'),
+       url('/assets/fonts/JameelNooriNastaleeq.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap');
 
 :root {
   --primary-navy: #12365A;
@@ -23,6 +66,9 @@
   --radius-md: 10px;
   --radius-lg: 16px;
   --radius-xl: 22px;
+
+  --font-urdu: 'Jameel Noori Nastaleeq', 'JameelNooriNastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', serif;
+  --font-english: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 * {
@@ -32,7 +78,7 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-english);
   background-color: var(--bg-main);
   color: var(--text-main);
   line-height: 1.6;
@@ -42,11 +88,55 @@ body {
   flex-direction: column;
 }
 
-/* Urdu font helper */
-.urdu-text, [dir="rtl"] {
-  font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Urdu Typesetting', serif;
-  line-height: 2.1;
+/* Authentic Jameel Noori Nastaleeq typography for Urdu & RTL */
+body[dir="rtl"], html[dir="rtl"] body, .urdu-text, [dir="rtl"] {
+  font-family: var(--font-urdu) !important;
+  line-height: 2.2;
   letter-spacing: 0;
+}
+
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] button, [dir="rtl"] input, [dir="rtl"] textarea, [dir="rtl"] select, [dir="rtl"] table {
+  font-family: var(--font-urdu) !important;
+}
+
+[dir="rtl"] .hero-title {
+  font-size: 26px;
+  line-height: 1.6;
+}
+
+[dir="rtl"] .hero-subtitle {
+  font-size: 15.5px;
+  line-height: 2.1;
+}
+
+[dir="rtl"] .heading-title {
+  font-size: 17.5px;
+  line-height: 1.8;
+  font-weight: 700;
+}
+
+[dir="rtl"] .heading-explanation {
+  font-size: 15.5px;
+  line-height: 2.2;
+}
+
+[dir="rtl"] .section-intro-text, [dir="rtl"] .section-conclusion-text {
+  font-size: 16px;
+  line-height: 2.2;
+}
+
+[dir="rtl"] .question-textarea {
+  font-size: 16.5px;
+  line-height: 2.2;
+}
+
+[dir="rtl"] .index-table {
+  font-size: 14.5px;
+  line-height: 1.8;
+}
+
+[dir="rtl"] .nav-tab {
+  font-size: 14.5px;
 }
 
 /* Header Navbar */
